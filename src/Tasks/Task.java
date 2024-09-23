@@ -1,11 +1,15 @@
+package Tasks;
+
+import History.Status;
+
 import java.util.*;
 
 public class Task {
 
-    int id;
-    String title;
-    String description;
-    Status status;
+    private int id;
+    private String title;
+    private String description;
+    private Status status;
 
     public Task(int id, String title, String description, Status status) {
         this.id = id;
@@ -20,35 +24,35 @@ public class Task {
         this.status = Status.NEW;
     }
 
-    String getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    void setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    String getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    void setDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    int getId() {
+    public int getId() {
         return id;
     }
 
-    void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    Status getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    void setStatus(Status status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -76,7 +80,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "Tasks.Task{" +
                 "name='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +

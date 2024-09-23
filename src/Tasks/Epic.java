@@ -1,8 +1,12 @@
+package Tasks;
+
+import History.Status;
+
 import java.util.*;
 
 public class Epic extends Task {
 
-    ArrayList<Subtask> subtaskList = new ArrayList<>();
+    private ArrayList<Subtask> subtaskList = new ArrayList<>();
 
     public Epic(String title, String description) {
         super(title, description);
@@ -12,25 +16,25 @@ public class Epic extends Task {
         super(id, title, description, status);
     }
 
-    void addSubTask(Subtask subtask) {
+    public void addSubTask(Subtask subtask) {
         subtaskList.add(subtask);
     }
 
-    void clearSubTasks() {
+    public void clearSubTasks() {
         subtaskList.clear();
     }
 
-    ArrayList<Subtask> getSubTaskList() {
+    public ArrayList<Subtask> getSubTaskList() {
         return subtaskList;
     }
 
-    void setSubTaskList(ArrayList<Subtask> subtaskList) {
+    public void setSubTaskList(ArrayList<Subtask> subtaskList) {
         this.subtaskList = subtaskList;
     }
 
     @Override
     public String toString() {
-        return "Epic{" +
+        return "Tasks.Epic{" +
                 "name= " + getTitle() + '\'' +
                 ", description = " + getDescription() + '\'' +
                 ", id=" + getId() +
