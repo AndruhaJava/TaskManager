@@ -1,6 +1,6 @@
-package Tasks;
+package tasks;
 
-import History.Status;
+import history.Status;
 
 import java.util.*;
 
@@ -10,10 +10,6 @@ public class Epic extends Task {
 
     public Epic(String title, String description) {
         super(title, description);
-    }
-
-    public Epic(int id, String title, String description, Status status) {
-        super(id, title, description, status);
     }
 
     public void addSubTask(Subtask subtask) {
