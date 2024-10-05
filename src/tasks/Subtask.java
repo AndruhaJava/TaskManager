@@ -1,6 +1,6 @@
 package tasks;
 
-import history.Status;
+import status.Status;
 
 public class Subtask extends Task {
 

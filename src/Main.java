@@ -1,5 +1,5 @@
-import history.Status;
-import manager.TaskManager;
+import status.Status;
+import manager.InMemoryTaskManager;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
@@ -7,47 +7,63 @@ import tasks.Task;
 public class Main {
 
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
+        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
 
         Task buildPc = new Task("Собрать компьютер", "Игровой");
-        Task buildPcCreated = taskManager.addTask(buildPc);
+        Task buildPcCreated = inMemoryTaskManager.addTask(buildPc);
         System.out.println(buildPcCreated);
 
         Task buildPcToUpdate = new Task(buildPc.getId(), "Купить монитор", "Обычный", Status.IN_PROGRESS);
-        Task buildPcUpdated = taskManager.updateTask(buildPcToUpdate);
+        Task buildPcUpdated = inMemoryTaskManager.updateTask(buildPcToUpdate);
         System.out.println(buildPcUpdated);
 
-        System.out.println(taskManager.getListOfTasks());
+        System.out.println(inMemoryTaskManager.getListOfTasks());
 
         Epic flight = new Epic("Перелет", "Рабочий");
-        taskManager.addEpic(flight);
+        inMemoryTaskManager.addEpic(flight);
         System.out.println(flight);
         Subtask flightSubtask1 = new Subtask("Собрать чемоданы", "БЫСТРО", flight.getId());
-        taskManager.addSubTask(flightSubtask1);
+        inMemoryTaskManager.addSubTask(flightSubtask1);
         System.out.println(flight);
         flightSubtask1.setStatus(Status.DONE);
-        taskManager.updateSubTask(flightSubtask1);
+        inMemoryTaskManager.updateSubTask(flightSubtask1);
         System.out.println(flight);
 
         Epic removal = new Epic("Переезд", "Срочный");
-        taskManager.addEpic(removal);
+        inMemoryTaskManager.addEpic(removal);
         System.out.println(removal);
         Subtask removalSubtask1 = new Subtask("Собрать вещи", "ВСЕ", removal.getId());
         Subtask removalSubtask2 = new Subtask("Купить мебель", "В ЗАЛ", removal.getId());
-        taskManager.addSubTask(removalSubtask1);
-        taskManager.addSubTask(removalSubtask2);
+        inMemoryTaskManager.addSubTask(removalSubtask1);
+        inMemoryTaskManager.addSubTask(removalSubtask2);
         System.out.println(removal);
         removalSubtask2.setStatus(Status.DONE);
-        taskManager.updateSubTask(removalSubtask2);
+        inMemoryTaskManager.updateSubTask(removalSubtask2);
         System.out.println(removal);
 
-        System.out.println(taskManager.getListOfSubTasks());
+        System.out.println(inMemoryTaskManager.getListOfSubTasks());
 
-        System.out.println(taskManager.getListOfEpics());
-        taskManager.deleteEpicFromId(flight.getId());
-        System.out.println(taskManager.getListOfEpics());
-        taskManager.deleteSubTaskFromId(removalSubtask2.getId());
-        System.out.println(taskManager.getListOfEpics());
+        System.out.println(inMemoryTaskManager.getListOfEpics());
+        inMemoryTaskManager.deleteEpicFromId(flight.getId());
+        System.out.println(inMemoryTaskManager.getListOfEpics());
+        inMemoryTaskManager.deleteSubTaskFromId(removalSubtask2.getId());
+        System.out.println(inMemoryTaskManager.getListOfEpics());
 
+        System.out.println("Задачи:");
+        for (Task task : inMemoryTaskManager.getListOfTasks()) {
+            System.out.println(task);
+        }
+        System.out.println("Подзадачи:");
+        for (Task subtask : inMemoryTaskManager.getListOfSubTasks()) {
+            System.out.println(subtask);
+        }
+        System.out.println("Эпики:");
+        for (Epic epic : inMemoryTaskManager.getListOfEpics()) {
+            System.out.println(epic);
+
+            for (Task task : inMemoryTaskManager.getEpicSubtasks(epic)) {
+                System.out.println("--> " + task);
+            }
+        }
     }
 }

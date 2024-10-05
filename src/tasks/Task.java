@@ -1,6 +1,6 @@
 package tasks;
 
-import history.Status;
+import status.Status;
 
 import java.util.*;
 
