@@ -12,19 +12,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
 
-    Subtask createSubtask(int epicId) {
+    protected Subtask createSubtask(int epicId) {
         return new Subtask("ПОДЗАДАЧА", "ОПИСАНИЕ",epicId);
     }
 
-    Epic createEpic() {
+    protected Epic createEpic() {
         return new Epic("ЭПИК", "ОПИСАНИЕ");
     }
 
-    Task createTask() {
+    protected Task createTask() {
         return new Task("ЗАДАЧА", "ОПИСАНИЕ");
     }
 
-    TaskManager manager;
+    protected TaskManager manager;
 
     @BeforeEach
     void beforeEach() {

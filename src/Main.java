@@ -1,5 +1,6 @@
+import manager.Managers;
+import manager.TaskManager;
 import status.Status;
-import manager.InMemoryTaskManager;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
@@ -7,7 +8,7 @@ import tasks.Task;
 public class Main {
 
     public static void main(String[] args) {
-        InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
+        TaskManager inMemoryTaskManager = Managers.getDefault();
 
         Task buildPc = new Task("Собрать компьютер", "Игровой");
         Task buildPcCreated = inMemoryTaskManager.addTask(buildPc);
