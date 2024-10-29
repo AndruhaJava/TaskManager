@@ -1,3 +1,2 @@
-# java-kanban
-Repository for homework project.
-*BASE
+# TaskManager
+Repository for homework project by Yandex.Practicum
