@@ -5,9 +5,9 @@ import tasks.Task;
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private final Map<Integer, Node<Task>> receivedTasks = new HashMap<>();
-    private Node<Task> head;
-    private Node<Task> tail;
+    private final Map<Integer, Node> receivedTasks = new HashMap<>();
+    private Node head;
+    private Node tail;
 
     @Override
     public void add(Task task) {
@@ -28,8 +28,8 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     private void linkLast(Task element) {
-        final Node<Task> oldTail = tail;
-        final Node<Task> newNode = new Node<Task>(oldTail, element, null);
+        final Node oldTail = tail;
+        final Node newNode = new Node(oldTail, element, null);
         tail = newNode;
         receivedTasks.put(element.getId(), newNode);
         if (oldTail == null) {
@@ -40,19 +40,19 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private List<Task> getTasks() {
         List<Task> tasks = new ArrayList<>();
-        Node<Task> currentNode = head;
+        Node currentNode = head;
         while (!(currentNode == null)) {
-            tasks.add(currentNode.getData());
+            tasks.add(currentNode.data);
             currentNode = currentNode.next;
         }
         return tasks;
     }
 
-    private void removeNode(Node<Task> node) {
+    private void removeNode(Node node) {
         if (!(node == null)) {
-            final Node<Task> next = node.next;
-            final Node<Task> previous = node.previous;
-            node.setData(null);
+            final Node next = node.next;
+            final Node previous = node.previous;
+            node.data = null;
             if (head == node && tail == node) {
                 head = null;
                 tail = null;
