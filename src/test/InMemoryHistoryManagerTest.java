@@ -1,45 +1,43 @@
 package test;
 
-import manager.Managers;
-import manager.TaskManager;
+import manager.InMemoryHistoryManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import status.Status;
 import tasks.Task;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 class InMemoryHistoryManagerTest {
-    private static TaskManager taskManager;
+    private static InMemoryHistoryManager historyManager;
 
     @BeforeEach
-    public void beforeEach() {
-        taskManager = Managers.getDefault();
+    public void beforeEachNext() {
+        historyManager = new InMemoryHistoryManager();
     }
 
-    //убедитесь, что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных
+    //Проверьте, что встроенный связный список версий, а также операции добавления и удаления работают корректно.
     @Test
-    public void shouldReturnOldTaskAfterUpdate() {
-        Task buildPc = new Task("Собрать компьютер", "Игровой");
-        taskManager.addTask(buildPc);
-        taskManager.getTaskFromId(buildPc.getId());
-        taskManager.updateTask(new Task(buildPc.getId(), "Купить монитор", "Обычный", Status.IN_PROGRESS));
-        List<Task> tasks = taskManager.getHistory();
-        Task oldTask = tasks.getFirst();
-        assertEquals(buildPc.getTitle(), oldTask.getTitle(), "В истории не сохранилась предыдущая версия задачи");
-        assertEquals(buildPc.getDescription(), oldTask.getDescription(), "В истории не сохранилась предыдущая версия задачи");
+    public void getHistory() {
+        Task task = new Task("TASK", "DESCRIPTION");
+        historyManager.add(task);
+        List<Task> history = historyManager.getHistory();
+        assertTrue(history.contains(task));
     }
 
     @Test
-    void addNewTask() {
-        Task task = taskManager.addTask(new Task("Test addNewTask", "Test addNewTask description"));
-        Task savedTask = taskManager.getTaskFromId(task.getId());
-        assertNotNull(savedTask, "Задача не найдена.");
-        assertEquals(task, savedTask, "Задачи не совпадают.");
-        List<Task> tasks = taskManager.getListOfTasks();
-        assertNotNull(tasks, "Задачи не возвращаются.");
-        assertEquals(1, tasks.size(), "Неверное количество задач.");
-        assertEquals(task, tasks.getFirst(), "Задачи не совпадают.");
+    void addTask() {
+        Task task = new Task("TASK", "DESCRIPTION");
+        historyManager.add(task);
+        assertEquals(1, historyManager.getHistory().size());
+    }
+
+    @Test
+    void removeTask() {
+        Task task = new Task("TASK", "DESCRIPTION");
+        historyManager.add(task);
+        historyManager.remove(task.getId());
+        assertEquals(0, historyManager.getHistory().size());
     }
 }

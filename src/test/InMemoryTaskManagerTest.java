@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class InMemoryTaskManagerTest {
 
     protected Subtask createSubtask(int epicId) {
-        return new Subtask("ПОДЗАДАЧА", "ОПИСАНИЕ",epicId);
+        return new Subtask("ПОДЗАДАЧА", "ОПИСАНИЕ", epicId);
     }
 
     protected Epic createEpic() {
@@ -41,11 +41,11 @@ class InMemoryTaskManagerTest {
         Subtask subtask = createSubtask(epicId);
         int subtaskId = manager.addSubTask(subtask).getId();
         assertNotNull(taskId, "ERROR");
-        assertNotNull(epicId,"ERROR");
-        assertNotNull(subtaskId,"ERROR");
-        assertEquals(task,manager.getTaskFromId(taskId),"ERROR");
-        assertEquals(epic,manager.getEpicFromId(epicId),"ERROR");
-        assertEquals(subtask,manager.getSubTaskFromId(subtaskId),"ERROR");
+        assertNotNull(epicId, "ERROR");
+        assertNotNull(subtaskId, "ERROR");
+        assertEquals(task, manager.getTaskFromId(taskId), "ERROR");
+        assertEquals(epic, manager.getEpicFromId(epicId), "ERROR");
+        assertEquals(subtask, manager.getSubTaskFromId(subtaskId), "ERROR");
     }
 
     //проверьте, что задачи с заданным id и сгенерированным id не конфликтуют внутри менеджера
@@ -57,6 +57,6 @@ class InMemoryTaskManagerTest {
         int taskId1 = manager.addTask(task1).getId();
         int taskId2 = manager.addTask(task2).getId();
         task1.setId(setId);
-        assertEquals(taskId1,task1.getId(),"ERROR");
+        assertEquals(taskId1, task1.getId(), "ERROR");
     }
 }
