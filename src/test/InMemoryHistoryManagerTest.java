@@ -1,4 +1,4 @@
-package tests;
+package test;
 
 import manager.InMemoryHistoryManager;
 import org.junit.jupiter.api.BeforeEach;
