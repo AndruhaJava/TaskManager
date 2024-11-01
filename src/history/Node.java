@@ -3,7 +3,6 @@ package history;
 import tasks.Task;
 
 class Node {
-
     private Task data;
     private Node next;
     private Node previous;
