@@ -1,5 +1,7 @@
 package manager;
 
+import history.HistoryManager;
+import history.InMemoryHistoryManager;
 import status.Status;
 import tasks.Epic;
 import tasks.Subtask;
@@ -138,6 +140,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTaskFromId(int id) {
         tasks.remove(id);
+        historyManager.remove(id);
     }
 
     @Override
@@ -150,6 +153,7 @@ public class InMemoryTaskManager implements TaskManager {
         subtaskList.remove(subtask);
         epic.setSubTaskList(subtaskList);
         updateEpicStatus(epic);
+        historyManager.remove(id);
     }
 
     @Override
@@ -159,6 +163,7 @@ public class InMemoryTaskManager implements TaskManager {
         for (Subtask subtask : epicSubtasks) {
             subtasks.remove(subtask.getId());
         }
+        historyManager.remove(id);
     }
 
     @Override

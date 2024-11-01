@@ -1,4 +1,4 @@
-package manager;
+package history;
 
 import tasks.Task;
 
@@ -35,36 +35,36 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (oldTail == null) {
             head = newNode;
         } else
-            oldTail.next = newNode;
+            oldTail.setNext(newNode);
     }
 
     private List<Task> getTasks() {
         List<Task> tasks = new ArrayList<>();
         Node currentNode = head;
         while (!(currentNode == null)) {
-            tasks.add(currentNode.data);
-            currentNode = currentNode.next;
+            tasks.add(currentNode.getData());
+            currentNode = currentNode.getNext();
         }
         return tasks;
     }
 
     private void removeNode(Node node) {
         if (!(node == null)) {
-            final Node next = node.next;
-            final Node previous = node.previous;
-            node.data = null;
+            final Node next = node.getNext();
+            final Node previous = node.getPrevious();
+            node.setData(null);
             if (head == node && tail == node) {
                 head = null;
                 tail = null;
-            } else if (head == node && !(tail == node)) {
+            } else if (head == node) {
                 head = next;
-                head.previous = null;
-            } else if (!(head == node) && tail == node) {
+                head.setPrevious(null);
+            } else if (tail == node) {
                 tail = previous;
-                tail.next = null;
+                tail.setNext(null);
             } else {
-                previous.next = next;
-                next.previous = previous;
+                previous.setNext(next);
+                next.setPrevious(previous);
             }
         }
     }
