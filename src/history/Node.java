@@ -12,6 +12,7 @@ class Node {
         this.next = next;
         this.previous = previous;
     }
+
     public Task getData() {
         return data;
     }
