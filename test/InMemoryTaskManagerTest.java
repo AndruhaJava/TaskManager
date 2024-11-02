@@ -40,9 +40,6 @@ class InMemoryTaskManagerTest {
         int epicId = manager.addEpic(epic).getId();
         Subtask subtask = createSubtask(epicId);
         int subtaskId = manager.addSubTask(subtask).getId();
-        assertNotNull(taskId, "ERROR");
-        assertNotNull(epicId, "ERROR");
-        assertNotNull(subtaskId, "ERROR");
         assertEquals(task, manager.getTaskFromId(taskId), "ERROR");
         assertEquals(epic, manager.getEpicFromId(epicId), "ERROR");
         assertEquals(subtask, manager.getSubTaskFromId(subtaskId), "ERROR");
