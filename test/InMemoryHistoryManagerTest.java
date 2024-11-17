@@ -5,9 +5,7 @@ import manager.Managers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tasks.Task;
-
 import java.util.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
@@ -15,14 +13,15 @@ class InMemoryHistoryManagerTest {
     private Task task;
 
     @BeforeEach
-    public void beforeEach() { task = new Task("TASK", "DESCRIPTION"); }
+    public void beforeEach() {
+        task = new Task("TASK", "DESCRIPTION");
+    }
 
     @BeforeEach
     public void beforeEachNext() {
         historyManager = Managers.getDefaultHistory();
     }
 
-    //Проверьте, что встроенный связный список версий, а также операции добавления и удаления работают корректно.
     @Test
     public void getHistory() {
         Task task = new Task("TASK", "DESCRIPTION");

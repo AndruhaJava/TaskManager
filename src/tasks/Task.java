@@ -1,11 +1,9 @@
 package tasks;
 
 import status.Status;
-
 import java.util.*;
 
 public class Task {
-
     private int id;
     private String title;
     private String description;

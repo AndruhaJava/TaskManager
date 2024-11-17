@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class TaskTest {
@@ -23,7 +22,6 @@ class TaskTest {
         manager = Managers.getDefault();
     }
 
-    //проверьте, что экземпляры класса Task равны друг другу, если равен их id
     @Test
     void shouldBeEqualTaskId() {
         int taskId = manager.addTask(task).getId();
@@ -31,7 +29,6 @@ class TaskTest {
         assertEquals(task, savedTask, "ERROR");
     }
 
-    //проверьте, что наследники класса Task равны друг другу, если равен их id;
     @Test
     void shouldBeEqualSubTaskId() {
         int epicId = manager.addEpic(epic).getId();
@@ -41,7 +38,6 @@ class TaskTest {
         assertEquals(subtask, savedSubTask, "ERROR");
     }
 
-    //проверьте, что наследники класса Task равны друг другу, если равен их id
     @Test
     void shouldBeEqualEpicId() {
         int epicId = manager.addEpic(epic).getId();
@@ -49,8 +45,6 @@ class TaskTest {
         assertEquals(epic, savedEpic, "ERROR");
     }
 
-
-    //проверьте, что объект Epic нельзя добавить в самого себя в виде подзадачи
     @Test
     void shouldBeNotAddEpicInEpic() {
         int epicId = manager.addEpic(epic).getId();
@@ -59,7 +53,6 @@ class TaskTest {
         assertNotNull(subtaskId1, "ERROR");
     }
 
-    //проверьте, что объект Subtask нельзя сделать своим же эпиком
     @Test
     void shouldBeNotSubTaskToEpic() {
         int epicId = manager.addEpic(epic).getId();
