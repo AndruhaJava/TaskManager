@@ -17,10 +17,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     public FileBackedTaskManager(File file) {
         this.file = file;
-        loadFromFile();
     }
 
-    protected void loadFromFile() {
+    public void loadFromFile() {
         try {
             if (file.exists() && Files.size(file.toPath()) > 0) {
                 List<String> lines = Files.readAllLines(file.toPath());
@@ -32,37 +31,37 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     }
                 }
                 for (Task task : tempTaskMap.values()) {
-                    if (task instanceof Epic) {
+                    if (task.getType().equals(Type.EPIC)) {
                         addEpic((Epic) task);
-                    } else if (task instanceof Subtask) {
+                    } else if (task.getType().equals(Type.SUBTASK)) {
                         addSubTask((Subtask) task);
-                    } else if (task != null) {
+                    } else if (task.getType().equals(Type.TASK)) {
                         addTask(task);
                     }
                 }
                 updateNextTaskId();
             }
-        } catch (IOException e) {
-            throw new ManagerSaveException("Error loading", e);
+        } catch (IOException exception) {
+            throw new ManagerSaveException("Error loading", exception);
         }
     }
 
-    protected void save() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("id,type,title,status,description,epic\n");
+    private void save() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("id,type,title,status,description,epic\n");
         for (Epic epic : getListOfEpics()) {
-            sb.append(toString(epic)).append("\n");
+            stringBuilder.append(toStringEpic(epic)).append("\n");
         }
         for (Subtask subtask : getListOfSubTasks()) {
-            sb.append(toString(subtask)).append("\n");
+            stringBuilder.append(toStringSub(subtask)).append("\n");
         }
         for (Task task : getListOfTasks()) {
-            sb.append(toString(task)).append("\n");
+            stringBuilder.append(toStringTask(task)).append("\n");
         }
         try {
-            Files.writeString(file.toPath(), sb.toString(), StandardOpenOption.CREATE);
-        } catch (IOException e) {
-            throw new ManagerSaveException("Error saving", e);
+            Files.writeString(file.toPath(), stringBuilder.toString(), StandardOpenOption.CREATE);
+        } catch (IOException exception) {
+            throw new ManagerSaveException("Error saving", exception);
         }
     }
 
@@ -133,18 +132,20 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
-    private String toString(Task task) {
-        if (task instanceof Subtask) {
-            return String.format("%d,%s,%s,%s,%s,%d", task.getId(), Type.SUBTASK,
-                    task.getTitle(), task.getStatus(), task.getDescription(),
-                    ((Subtask) task).getEpicId());
-        } else if (task instanceof Epic) {
-            return String.format("%d,%s,%s,%s,%s,", task.getId(), Type.EPIC,
-                    task.getTitle(), task.getStatus(), task.getDescription());
-        } else {
-            return String.format("%d,%s,%s,%s,%s,", task.getId(), Type.TASK,
-                    task.getTitle(), task.getStatus(), task.getDescription());
-        }
+    private String toStringTask(Task task) {
+        return String.format("%d,%s,%s,%s,%s,", task.getId(), Type.TASK,
+                task.getTitle(), task.getStatus(), task.getDescription());
+    }
+
+    private String toStringSub(Subtask subtask) {
+        return String.format("%d,%s,%s,%s,%s,%d", subtask.getId(), Type.SUBTASK,
+                subtask.getTitle(), subtask.getStatus(), subtask.getDescription(),
+                subtask.getEpicId());
+    }
+
+    private String toStringEpic(Epic task) {
+        return String.format("%d,%s,%s,%s,%s,", task.getId(), Type.EPIC,
+                task.getTitle(), task.getStatus(), task.getDescription());
     }
 
     private Task fromString(String value) {

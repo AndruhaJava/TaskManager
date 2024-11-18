@@ -1,6 +1,8 @@
 package tasks;
 
 import status.Status;
+import status.Type;
+
 import java.util.*;
 
 public class Task {
@@ -44,6 +46,10 @@ public class Task {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Type getType() {
+        return Type.TASK;
     }
 
     public Status getStatus() {

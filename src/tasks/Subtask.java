@@ -1,6 +1,7 @@
 package tasks;
 
 import status.Status;
+import status.Type;
 
 public class Subtask extends Task {
     private final int epicId;
@@ -13,6 +14,10 @@ public class Subtask extends Task {
     public Subtask(int id, String title, String description, Status status, int epicId) {
         super(id, title, description, status);
         this.epicId = epicId;
+    }
+
+    public Type getType() {
+        return Type.SUBTASK;
     }
 
     public int getEpicId() {
