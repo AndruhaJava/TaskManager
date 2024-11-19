@@ -24,7 +24,7 @@ class FileBackedTaskManagerTest {
     @Test
     void saveAndLoadEmptyFile() {
         assertTrue(taskManager.getListOfTasks().isEmpty(), "TaskManager not empty");
-        taskManager.loadFromFile();
+        taskManager = FileBackedTaskManager.loadFromFile(tempFile);
         assertTrue(taskManager.getListOfTasks().isEmpty(), "TaskManager not empty after load");
     }
 
@@ -34,8 +34,8 @@ class FileBackedTaskManagerTest {
         Task task2 = new Task("TASK2", "DESCRIPTION2");
         taskManager.addTask(task1);
         taskManager.addTask(task2);
-        FileBackedTaskManager newTaskManager = new FileBackedTaskManager(tempFile);
-        newTaskManager.loadFromFile();
+        FileBackedTaskManager newTaskManager;
+        newTaskManager = FileBackedTaskManager.loadFromFile(tempFile);
         assertEquals(2, newTaskManager.getListOfTasks().size(), "SIZE < 2");
         assertEquals(task1.getTitle(), newTaskManager.getTaskFromId(task1.getId()).getTitle(), "TASK1 not equals");
         assertEquals(task2.getTitle(), newTaskManager.getTaskFromId(task2.getId()).getTitle(), "TASK2 not equals");

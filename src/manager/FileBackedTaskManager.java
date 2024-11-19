@@ -19,30 +19,32 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         this.file = file;
     }
 
-    public void loadFromFile() {
+    public static FileBackedTaskManager loadFromFile(File file) throws ManagerSaveException {
+        FileBackedTaskManager manager = new FileBackedTaskManager(file);
         try {
             if (file.exists() && Files.size(file.toPath()) > 0) {
                 List<String> lines = Files.readAllLines(file.toPath());
                 Map<Integer, Task> tempTaskMap = new HashMap<>();
                 for (String line : lines.subList(1, lines.size())) {
                     if (!line.isEmpty()) {
-                        Task task = fromString(line);
+                        Task task = manager.fromString(line);
                         tempTaskMap.put(task.getId(), task);
                     }
                 }
                 for (Task task : tempTaskMap.values()) {
                     if (task.getType().equals(Type.EPIC)) {
-                        addEpic((Epic) task);
+                        manager.addEpic((Epic) task);
                     } else if (task.getType().equals(Type.SUBTASK)) {
-                        addSubTask((Subtask) task);
+                        manager.addSubTask((Subtask) task);
                     } else if (task.getType().equals(Type.TASK)) {
-                        addTask(task);
+                        manager.addTask(task);
                     }
                 }
-                updateNextTaskId();
+                manager.updateNextTaskId();
             }
-        } catch (IOException exception) {
-            throw new ManagerSaveException("Error loading", exception);
+            return manager;
+        } catch (IOException e) {
+            throw new ManagerSaveException("Error loading", e);
         }
     }
 
