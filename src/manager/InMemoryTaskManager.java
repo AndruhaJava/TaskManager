@@ -5,17 +5,14 @@ import status.Status;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
-
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
-
     private final Map<Integer, Task> tasks = new HashMap<>();
     private final Map<Integer, Subtask> subtasks = new HashMap<>();
     private final Map<Integer, Epic> epics = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
-
-    private int id = 1;
+    protected int id = 1;
 
     @Override
     public int getNextId() {

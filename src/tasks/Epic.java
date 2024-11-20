@@ -1,5 +1,7 @@
 package tasks;
 
+import status.Type;
+
 import java.util.*;
 
 public class Epic extends Task {
@@ -8,6 +10,10 @@ public class Epic extends Task {
 
     public Epic(String title, String description) {
         super(title, description);
+    }
+
+    public Type getType() {
+        return Type.EPIC;
     }
 
     public void addSubTask(Subtask subtask) {
