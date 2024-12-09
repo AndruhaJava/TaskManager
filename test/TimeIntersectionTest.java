@@ -14,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TimeIntersectionTest {
     private TaskManager taskManager;
+    Task task1 = new Task("task1", "description1");
+    Task task2 = new Task("task2", "description2");
 
     @BeforeEach
     public void setUp() {
@@ -22,7 +24,6 @@ public class TimeIntersectionTest {
 
     @Test
     public void testAddNonOverlappingTask() {
-        Task task1 = new Task("task1", "description1");
         task1.setStartTime(LocalDateTime.of(2025, 10, 10, 10, 0));
         task1.setDuration(Duration.ofMinutes(30));
         Task addedTask = taskManager.addTask(task1);
@@ -31,11 +32,9 @@ public class TimeIntersectionTest {
 
     @Test
     public void testAddOverlappingTask() {
-        Task task1 = new Task("task1", "description1");
         task1.setStartTime(LocalDateTime.of(2023, 10, 10, 10, 0));
         task1.setDuration(Duration.ofMinutes(30));
         taskManager.addTask(task1);
-        Task task2 = new Task("task2", "description2");
         task2.setStartTime(LocalDateTime.of(2023, 10, 10, 10, 15));
         task2.setDuration(Duration.ofMinutes(30));
         Exception exception = assertThrows(ManagerSaveException.class, () -> {
@@ -46,15 +45,13 @@ public class TimeIntersectionTest {
 
     @Test
     public void testAddMultipleTasks() {
-        Task task1 = new Task("task1", "description11");
         task1.setStartTime(LocalDateTime.of(2023, 10, 10, 10, 0));
         task1.setDuration(Duration.ofMinutes(30));
         taskManager.addTask(task1);
-        Task task2 = new Task("task2", "description12");
         task2.setStartTime(LocalDateTime.of(2023, 10, 10, 10, 30)); // No overlap
         task2.setDuration(Duration.ofMinutes(30));
         taskManager.addTask(task2);
-        Task task3 = new Task("task3", "description13");
+        Task task3 = new Task("task3", "description3");
         task3.setStartTime(LocalDateTime.of(2023, 10, 10, 10, 15)); // Overlaps with task1
         Exception exception = assertThrows(ManagerSaveException.class, () -> {
             taskManager.addTask(task3);
@@ -64,11 +61,9 @@ public class TimeIntersectionTest {
 
     @Test
     public void testDeleteTaskFreesTimeSlots() {
-        Task task1 = new Task("task1", "description1");
         task1.setStartTime(LocalDateTime.of(2023, 10, 10, 10, 0));
         task1.setDuration(Duration.ofMinutes(30));
         taskManager.addTask(task1);
-        Task task2 = new Task("task2", "description2");
         task2.setStartTime(LocalDateTime.of(2023, 10, 10, 10, 15)); // Совпадает с задачей 1
         Exception exception = assertThrows(ManagerSaveException.class, () -> {
             taskManager.addTask(task2);

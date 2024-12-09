@@ -59,8 +59,8 @@ class TaskTest {
         Subtask subtask1 = taskManager.addSubTask(new Subtask("subtask1", "description1", epic.getId()));
         Subtask subtask2 = taskManager.addSubTask(new Subtask("subtask2", "description2", epic.getId()));
         subtask1.setStatus(Status.DONE);
-        epic.updateSubTask(subtask1);
-        assertEquals(Status.DONE, epic.getSubTaskList().getFirst().getStatus());
+        taskManager.updateSubTask(subtask1);
+        assertEquals(Status.DONE, taskManager.getListOfSubTasks().getFirst().getStatus());
     }
 
     @BeforeEach

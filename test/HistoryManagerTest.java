@@ -16,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class HistoryManagerTest {
     private TaskManager taskManager;
     private HistoryManager historyManager;
+    Task task1 = new Task("task1", "description1");
+    Task task2 = new Task("task2", "description2");
 
     @BeforeEach
     void setUp() {
@@ -25,11 +27,8 @@ public class HistoryManagerTest {
 
     @Test
     void testHistoryManager() {
-        TaskManager taskManager = Managers.getDefault();
-        Task task1 = new Task("task1", "description1");
         taskManager.addTask(task1);
         taskManager.getTaskFromId(task1.getId());
-        Task task2 = new Task("task2", "description2");
         taskManager.addTask(task2);
         taskManager.getTaskFromId(task2.getId());
         List<Task> history = taskManager.getHistory();
@@ -40,9 +39,6 @@ public class HistoryManagerTest {
 
     @Test
     void testHistoryManagerWithDuplicates() {
-        TaskManager taskManager = Managers.getDefault();
-
-        Task task1 = new Task("task1", "description1");
         taskManager.addTask(task1);
         taskManager.getTaskFromId(task1.getId());
         taskManager.getTaskFromId(task1.getId());
@@ -53,11 +49,8 @@ public class HistoryManagerTest {
 
     @Test
     void testHistoryManagerWithRemove() {
-        TaskManager taskManager = Managers.getDefault();
-        Task task1 = new Task("task1", "description1");
         taskManager.addTask(task1);
         taskManager.getTaskFromId(task1.getId());
-        Task task2 = new Task("task2", "description2");
         taskManager.addTask(task2);
         taskManager.getTaskFromId(task2.getId());
         taskManager.deleteTaskFromId(task1.getId());
@@ -68,7 +61,6 @@ public class HistoryManagerTest {
 
     @Test
     void testHistoryManagerWithRemoveEpic() {
-        TaskManager taskManager = Managers.getDefault();
         Epic epic1 = taskManager.addEpic(new Epic("epic1", "descriptionepic1"));
         Subtask subtask1 = taskManager.addSubTask(new Subtask("subtask1", "descriptionsubtask1", epic1.getId()));
         taskManager.getEpicFromId(epic1.getId());
@@ -80,7 +72,6 @@ public class HistoryManagerTest {
 
     @Test
     void testHistoryManagerWithRemoveSubtask() {
-        TaskManager taskManager = Managers.getDefault();
         Epic epic1 = taskManager.addEpic(new Epic("epic1", "descriptionepic1"));
         Subtask subtask1 = taskManager.addSubTask(new Subtask("subtask1", "descriptionsubtask1", epic1.getId()));
         taskManager.getEpicFromId(epic1.getId());
