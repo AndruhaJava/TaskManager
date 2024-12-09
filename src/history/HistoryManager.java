@@ -1,6 +1,7 @@
 package history;
 
 import tasks.Task;
+
 import java.util.*;
 
 public interface HistoryManager {

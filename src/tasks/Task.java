@@ -3,6 +3,8 @@ package tasks;
 import status.Status;
 import status.Type;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class Task {
@@ -10,6 +12,8 @@ public class Task {
     private String title;
     private String description;
     private Status status;
+    private Duration duration;
+    private LocalDateTime startTime;
 
     public Task(int id, String title, String description, Status status) {
         this.id = id;
@@ -22,6 +26,8 @@ public class Task {
         this.title = title;
         this.description = description;
         this.status = Status.NEW;
+        this.duration = Duration.ZERO;
+        this.startTime = null;
     }
 
     public String getTitle() {
@@ -58,6 +64,26 @@ public class Task {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return startTime.plus(duration);
     }
 
     @Override
