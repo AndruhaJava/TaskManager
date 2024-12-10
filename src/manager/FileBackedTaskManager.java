@@ -8,6 +8,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +53,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void save() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("id,type,title,status,description,epic\n");
+        stringBuilder.append("id,type,title,status,description,duration,startTime,epic\n");
         for (Epic epic : getListOfEpics()) {
             stringBuilder.append(toStringEpic(epic)).append("\n");
         }
@@ -135,47 +138,61 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private String toStringTask(Task task) {
-        return String.format("%d,%s,%s,%s,%s,", task.getId(), Type.TASK,
-                task.getTitle(), task.getStatus(), task.getDescription());
+        return String.format("%d,%s,%s,%s,%s,", task.getId(), Type.EPIC,
+                task.getTitle(), task.getStatus(), task.getDescription(),
+                task.getDuration().toMinutes(), task.getStartTime());
     }
 
     private String toStringSub(Subtask subtask) {
         return String.format("%d,%s,%s,%s,%s,%d", subtask.getId(), Type.SUBTASK,
                 subtask.getTitle(), subtask.getStatus(), subtask.getDescription(),
+                subtask.getDuration().toMinutes(), subtask.getStartTime(),
                 subtask.getEpicId());
     }
 
     private String toStringEpic(Epic task) {
         return String.format("%d,%s,%s,%s,%s,", task.getId(), Type.EPIC,
-                task.getTitle(), task.getStatus(), task.getDescription());
+                task.getTitle(), task.getStatus(), task.getDescription(),
+                task.getDuration().toMinutes(), task.getStartTime());
     }
 
     private Task fromString(String value) {
         String[] parts = value.split(",");
         int id = Integer.parseInt(parts[0]);
         Type type = Type.valueOf(parts[1]);
-        String name = parts[2];
-        Status status = Status.valueOf(parts[3]);
-        String description = parts[4];
+        String title = parts[2];
+        String description = parts[3];
+        Status status = Status.valueOf(parts[4]);
+        Duration duration = Duration.ofMinutes(Long.parseLong(parts[5]));
+        LocalDateTime startTime = null;
+        if (parts.length >= 7 && parts[6] != null && !parts[6].isBlank()) {
+            startTime = LocalDateTime.parse(parts[6], DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        }
         switch (type) {
             case TASK:
-                Task task = new Task(name, description);
+                Task task = new Task(title, description);
                 task.setId(id);
                 task.setStatus(status);
+                task.setDuration(duration);
+                task.setStartTime(startTime);
                 return task;
             case EPIC:
-                Epic epic = new Epic(name, description);
+                Epic epic = new Epic(title, description);
                 epic.setId(id);
                 epic.setStatus(status);
+                epic.setDuration(duration);
+                epic.setStartTime(startTime);
                 return epic;
             case SUBTASK:
-                int epicId = Integer.parseInt(parts[5]);
-                Subtask subtask = new Subtask(name, description, epicId);
+                int epicId = Integer.parseInt(parts[7]);
+                Subtask subtask = new Subtask(title, description, epicId);
                 subtask.setId(id);
                 subtask.setStatus(status);
+                subtask.setDuration(duration);
+                subtask.setStartTime(startTime);
                 return subtask;
             default:
-                throw new IllegalArgumentException("Unknown type");
+                throw new IllegalArgumentException("Неизвестный тип задачи: " + type);
         }
     }
 }

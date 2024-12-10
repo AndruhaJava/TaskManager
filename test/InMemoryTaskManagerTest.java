@@ -7,8 +7,12 @@ import org.junit.jupiter.api.Test;
 import tasks.Epic;
 import tasks.Subtask;
 import tasks.Task;
+
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.*;
-class InMemoryTaskManagerTest {
+
+class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     protected Subtask createSubtask(int epicId) {
         return new Subtask("ПОДЗАДАЧА", "ОПИСАНИЕ", epicId);
@@ -22,7 +26,7 @@ class InMemoryTaskManagerTest {
         return new Task("ЗАДАЧА", "ОПИСАНИЕ");
     }
 
-    protected TaskManager manager;
+    protected InMemoryTaskManager manager;
 
     @BeforeEach
     void beforeEach() {
@@ -51,5 +55,11 @@ class InMemoryTaskManagerTest {
         int taskId2 = manager.addTask(task2).getId();
         task1.setId(setId);
         assertEquals(taskId1, task1.getId(), "ERROR");
+    }
+
+    @Override
+    protected InMemoryTaskManager createTaskManager() throws IOException {
+        manager = new InMemoryTaskManager();
+        return manager;
     }
 }

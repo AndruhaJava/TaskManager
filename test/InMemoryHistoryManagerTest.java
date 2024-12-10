@@ -5,7 +5,9 @@ import manager.Managers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tasks.Task;
+
 import java.util.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
@@ -24,7 +26,6 @@ class InMemoryHistoryManagerTest {
 
     @Test
     public void getHistory() {
-        Task task = new Task("TASK", "DESCRIPTION");
         historyManager.add(task);
         List<Task> history = historyManager.getHistory();
         assertTrue(history.contains(task));
