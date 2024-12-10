@@ -15,14 +15,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HistoryManagerTest {
     private TaskManager taskManager;
-    private HistoryManager historyManager;
-    Task task1 = new Task("task1", "description1");
-    Task task2 = new Task("task2", "description2");
+    private final Task task1 = new Task("task1", "description1");
+    private final Task task2 = new Task("task2", "description2");
 
     @BeforeEach
     void setUp() {
         taskManager = Managers.getDefault();
-        historyManager = Managers.getDefaultHistory();
     }
 
     @Test

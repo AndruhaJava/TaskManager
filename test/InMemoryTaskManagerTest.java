@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class InMemoryTaskManagerTest extends TaskManagerTest {
+class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {
 
     protected Subtask createSubtask(int epicId) {
         return new Subtask("ПОДЗАДАЧА", "ОПИСАНИЕ", epicId);
@@ -26,7 +26,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
         return new Task("ЗАДАЧА", "ОПИСАНИЕ");
     }
 
-    protected TaskManager manager;
+    protected InMemoryTaskManager manager;
 
     @BeforeEach
     void beforeEach() {
@@ -58,7 +58,7 @@ class InMemoryTaskManagerTest extends TaskManagerTest {
     }
 
     @Override
-    protected TaskManager createTaskManager() throws IOException {
+    protected InMemoryTaskManager createTaskManager() throws IOException {
         manager = new InMemoryTaskManager();
         return manager;
     }

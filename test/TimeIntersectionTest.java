@@ -14,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TimeIntersectionTest {
     private TaskManager taskManager;
-    Task task1 = new Task("task1", "description1");
-    Task task2 = new Task("task2", "description2");
+    private final Task task1 = new Task("task1", "description1");
+    private final Task task2 = new Task("task2", "description2");
 
     @BeforeEach
     public void setUp() {
