@@ -2,13 +2,16 @@ package test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import http.DurationAdapter;
 import http.HttpTaskServer;
+import http.LocalDateTimeAdapter;
 import manager.Managers;
 import manager.TaskManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import status.HttpStatus;
 import tasks.Epic;
 import tasks.Subtask;
 
@@ -26,8 +29,8 @@ public class HistoryEndpointsTest {
     private static final String DEFAULT_HISTORY_URI = "http://localhost:8080/history";
     private final TaskManager taskManager = Managers.getDefault();
     private static final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(Duration.class, new HttpTaskServer.DurationAdapter())
-            .registerTypeAdapter(LocalDateTime.class, new HttpTaskServer.LocalDateTimeAdapter())
+            .registerTypeAdapter(Duration.class, new DurationAdapter())
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .create();
 
     @BeforeEach
@@ -50,7 +53,7 @@ public class HistoryEndpointsTest {
                 .uri(uri)
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        Assertions.assertEquals(200, response.statusCode(), "Not right response");
+        Assertions.assertEquals(HttpStatus.OK.getCode(), response.statusCode(), "Not right response");
     }
 
     @Test
@@ -63,7 +66,7 @@ public class HistoryEndpointsTest {
                 .uri(uri1)
                 .build();
         HttpResponse<String> response1 = client.send(request1, HttpResponse.BodyHandlers.ofString());
-        Assertions.assertEquals(200, response1.statusCode(), "Not right response");
+        Assertions.assertEquals(HttpStatus.OK.getCode(), response1.statusCode(), "Not right response");
         URI uri2 = URI.create("http://localhost:8080/subtasks");
         Subtask subtask11 = new Subtask("subtask", "description", 1);
         HttpRequest request2 = HttpRequest.newBuilder()
@@ -72,20 +75,20 @@ public class HistoryEndpointsTest {
                 .uri(uri2)
                 .build();
         HttpResponse<String> response2 = client.send(request2, HttpResponse.BodyHandlers.ofString());
-        Assertions.assertEquals(200, response2.statusCode(), "Not right response");
+        Assertions.assertEquals(HttpStatus.OK.getCode(), response2.statusCode(), "Not right response");
         URI uri3 = URI.create("http://localhost:8080/subtasks");
         HttpRequest request3 = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri3)
                 .build();
         HttpResponse<String> response3 = client.send(request3, HttpResponse.BodyHandlers.ofString());
-        Assertions.assertEquals(200, response3.statusCode(), "Not right response");
+        Assertions.assertEquals(HttpStatus.OK.getCode(), response3.statusCode(), "Not right response");
         URI uri4 = URI.create(DEFAULT_HISTORY_URI);
         HttpRequest request4 = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri4)
                 .build();
         HttpResponse<String> response4 = client.send(request4, HttpResponse.BodyHandlers.ofString());
-        Assertions.assertEquals(200, response4.statusCode(), "Not right response");
+        Assertions.assertEquals(HttpStatus.OK.getCode(), response4.statusCode(), "Not right response");
     }
 }

@@ -3,27 +3,27 @@ package http;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 public abstract class BaseHttpHandler {
 
-    public void sendText(HttpExchange h, String text, int statusCode) throws IOException {
-        byte[] resp = text.getBytes(StandardCharsets.UTF_8);
-        h.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
-        h.sendResponseHeaders(statusCode, resp.length);
-        h.getResponseBody().write(resp);
-        h.close();
+    protected static void writeResponse(HttpExchange exchange, String responseString, int responseCode) throws IOException {
+        exchange.getResponseHeaders().set("Content-Type", "application/json");
+        byte[] bytes = responseString.getBytes(StandardCharsets.UTF_8);
+        exchange.sendResponseHeaders(responseCode, bytes.length);
+        try (OutputStream os = exchange.getResponseBody()) {
+            os.write(bytes);
+        }
     }
 
-    public void sendNotFound(HttpExchange exchange) throws IOException {
-        exchange.sendResponseHeaders(404, -1);
-    }
-
-    public void sendNotAcceptable(HttpExchange exchange, String message) throws IOException {
-        byte[] resp = message.getBytes(StandardCharsets.UTF_8);
-        exchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
-        exchange.sendResponseHeaders(406, resp.length);
-        exchange.getResponseBody().write(resp);
-        exchange.close();
+    protected static Optional<Integer> getTaskId(HttpExchange exchange) {
+        String[] splitPath = exchange.getRequestURI().getPath().split("/");
+        try {
+            return Optional.of(Integer.parseInt(splitPath[2]));
+        } catch (NumberFormatException exception) {
+            return Optional.empty();
+        }
     }
 }

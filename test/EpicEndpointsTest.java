@@ -2,13 +2,16 @@ package test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import http.DurationAdapter;
 import http.HttpTaskServer;
+import http.LocalDateTimeAdapter;
 import manager.Managers;
 import manager.TaskManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import status.HttpStatus;
 import tasks.Epic;
 
 import java.io.IOException;
@@ -26,8 +29,8 @@ public class EpicEndpointsTest {
     private final TaskManager taskManager = Managers.getDefault();
     private final Epic epic1 = new Epic("epic", "description");
     private static final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(Duration.class, new HttpTaskServer.DurationAdapter())
-            .registerTypeAdapter(LocalDateTime.class, new HttpTaskServer.LocalDateTimeAdapter())
+            .registerTypeAdapter(Duration.class, new DurationAdapter())
+            .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .create();
 
     @BeforeEach
@@ -50,7 +53,7 @@ public class EpicEndpointsTest {
                 .uri(uri)
                 .build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        Assertions.assertEquals(200, response.statusCode(), "Not right response");
+        Assertions.assertEquals(HttpStatus.OK.getCode(), response.statusCode(), "Not right response");
     }
 
     @Test
@@ -62,14 +65,14 @@ public class EpicEndpointsTest {
                 .uri(uri1)
                 .build();
         HttpResponse<String> response1 = client.send(request1, HttpResponse.BodyHandlers.ofString());
-        Assertions.assertEquals(200, response1.statusCode(), "Not right response");
+        Assertions.assertEquals(HttpStatus.OK.getCode(), response1.statusCode(), "Not right response");
         URI uri2 = URI.create(DEFAULT_EPICS_URI);
         HttpRequest request2 = HttpRequest.newBuilder()
                 .GET()
                 .uri(uri2)
                 .build();
         HttpResponse<String> response2 = client.send(request2, HttpResponse.BodyHandlers.ofString());
-        Assertions.assertEquals(200, response2.statusCode(), "Not right response");
+        Assertions.assertEquals(HttpStatus.OK.getCode(), response2.statusCode(), "Not right response");
     }
 
     @Test
@@ -81,7 +84,7 @@ public class EpicEndpointsTest {
                 .uri(uri1)
                 .build();
         HttpResponse<String> response1 = client.send(request1, HttpResponse.BodyHandlers.ofString());
-        Assertions.assertEquals(200, response1.statusCode(), "Not right response");
+        Assertions.assertEquals(HttpStatus.OK.getCode(), response1.statusCode(), "Not right response");
         URI uri2 = URI.create(DEFAULT_EPICS_URI + "/1");
         HttpRequest request2 = HttpRequest.newBuilder()
                 .DELETE()
@@ -89,6 +92,6 @@ public class EpicEndpointsTest {
                 .uri(uri2)
                 .build();
         HttpResponse<String> response2 = client.send(request2, HttpResponse.BodyHandlers.ofString());
-        Assertions.assertEquals(201, response2.statusCode(), "Not right response");
+        Assertions.assertEquals(HttpStatus.CREATED.getCode(), response2.statusCode(), "Not right response");
     }
 }
